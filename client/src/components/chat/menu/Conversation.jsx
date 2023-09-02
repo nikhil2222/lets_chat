@@ -3,7 +3,7 @@ import { getUsers } from "../../../service/api";
 import { Box, styled, Divider } from "@mui/material";
 import { AccountContext } from "../../context/AccountProvider";
 // components
-import Conversation from "./Conversatations.js";
+import Conversation from "./Conversatations.jsx";
 const Components = styled(Box)`
    height:81vh;
    overflow:overlay;
@@ -15,16 +15,18 @@ const StyledDivider = styled(Divider)
     background-color:#e9edef;
     opacity: 0.6;
 `
-const Conversations = () => {
+const Conversations = ({text}) => {
     const [users, setUsers] = useState([]);
     const { account } = useContext(AccountContext);
     useEffect(() => {
         const fetchData = async () => {
             let response = await getUsers();
-            setUsers(response);
+            const filteredData = response.filter(user => user.name.toLowerCase().includes(text.toLowerCase()));
+            setUsers(filteredData);
+         
         }
         fetchData();
-    }, []);
+    }, [text]);
     return (
         <Components>
             {
